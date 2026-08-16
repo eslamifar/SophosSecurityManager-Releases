@@ -15,9 +15,12 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
+Current version: **1.2.1**
+
 ## What the application does
 
 - Connects to Sophos Firewall through the XML API.
+- Negotiates the available XML API version and selects a compatibility profile for SFOS 17.5, 18/19, 20, 21, and newer releases.
 - Reads IPv4 addresses from a local TXT file or an online source.
 - Displays valid, duplicate, and invalid entries.
 - Runs Dry Run / Analyze before production changes.
@@ -26,10 +29,14 @@ Current update metadata: [version.json](https://github.com/eslamifar/SophosSecur
 - Uses the exact base group name when the entire list fits in one group.
 - Fills free slots in existing managed groups before creating new groups.
 - Imports in controlled batches with progress, elapsed time, safe stop, and last-batch rollback.
+- Offers **Safe** mode for maximum verification and **Fast** mode with cached inventory and periodic synchronization for large imports.
 - Can create managed host names such as `groupAfta-001-1.2.3.4`.
 - Refreshes group information during long imports.
 - Shows groups, member counts, host names, and addresses.
 - Provides an `ALL` view for grouped and independent IP host objects.
+- Searches and filters grouped or independent host objects and shows group membership in the `ALL` view.
+- Displays inventory-health information before management operations.
+- Creates a JSON safety snapshot before import and exports operation reports in CSV and JSON formats.
 - Supports safe single-host and group management while import is stopped.
 - Records operations and errors for troubleshooting.
 - Prevents multiple application instances.
