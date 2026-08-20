@@ -15,7 +15,7 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
-Current version: **1.2.3**
+Current version: **1.2.4**
 
 ## What the application does
 
@@ -45,6 +45,8 @@ Current version: **1.2.3**
 - Schedules an immediate encrypted or unencrypted local Sophos configuration backup through the supported XML API.
 - Provides guarded Web Admin handoffs for device restart, shutdown, and configuration restore where the public XML API does not expose a supported operation.
 - Displays detailed rolling diagnostic logs inside the application, including sanitized Sophos API response details.
+- Keeps unsupported restart, shutdown, and restore controls disabled on SFOS versions where the public XML API does not expose them.
+- Shows where locally created firewall backups can be listed, downloaded, or deleted safely in Sophos Web Admin.
 
 ## Safety features
 
