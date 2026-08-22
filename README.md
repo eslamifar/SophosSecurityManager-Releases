@@ -15,7 +15,7 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
-Current version: **1.2.4**
+Current version: **1.2.5**
 
 ## What the application does
 
@@ -47,6 +47,9 @@ Current version: **1.2.4**
 - Displays detailed rolling diagnostic logs inside the application, including sanitized Sophos API response details.
 - Keeps unsupported restart, shutdown, and restore controls disabled on SFOS versions where the public XML API does not expose them.
 - Shows where locally created firewall backups can be listed, downloaded, or deleted safely in Sophos Web Admin.
+- Disables Save Settings immediately while a connection attempt is running and restores it after a failed connection or disconnect.
+- Detects API-disabled, authentication, TLS, timeout, and network connection failures and displays targeted recovery guidance.
+- Places Base group name and Group capacity together in one aligned Home-tab row.
 
 ## Safety features
 
