@@ -15,7 +15,7 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
-Current version: **1.2.5**
+Current version: **1.2.6**
 
 ## What the application does
 
@@ -50,6 +50,10 @@ Current version: **1.2.5**
 - Disables Save Settings immediately while a connection attempt is running and restores it after a failed connection or disconnect.
 - Detects API-disabled, authentication, TLS, timeout, and network connection failures and displays targeted recovery guidance.
 - Places Base group name and Group capacity together in one aligned Home-tab row.
+- Provides virtual `# ALL` and `# DUPLICATES` inventory views, separated visually from real Sophos groups.
+- Supports sortable host name, IP address, and group-membership columns.
+- Supports configurable automatic disconnect after inactivity.
+- Shows update download progress inside the application and warns when an available update is declined.
 
 ## Safety features
 
