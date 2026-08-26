@@ -15,7 +15,7 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
-Current version: **1.2.70**
+Current version: **1.2.71**
 
 ## What the application does
 
@@ -59,6 +59,10 @@ Current version: **1.2.70**
 - Supports sortable host name, IP address, and group-membership columns.
 - Supports configurable automatic disconnect after inactivity.
 - Shows update download progress inside the application and warns when an available update is declined.
+- Centers update downloads over the main window and provides real Pause/Resume and Cancel controls.
+- Shows a safe direct GitHub installer link when an in-app update download fails.
+- Allows the main window to be resized, minimized, and maximized while preserving a safe minimum size.
+- Restores the last valid main-window size, position, and maximized state on the next run.
 - Shows an inline startup update-check status on Home with a bounded wait before enabling the main application.
 
 ## Safety features
