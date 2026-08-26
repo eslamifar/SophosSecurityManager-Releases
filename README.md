@@ -15,7 +15,7 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
-Current version: **1.2.66**
+Current version: **1.2.67**
 
 ## What the application does
 
@@ -38,6 +38,7 @@ Current version: **1.2.66**
 - Displays inventory-health information before management operations.
 - Creates a JSON safety snapshot before import and exports operation reports in CSV and JSON formats.
 - Supports safe single-host and group management while import is stopped.
+- Supports adding IPv4 network objects in CIDR notation (for example `192.168.0.0/23`) as well as individual IPv4 hosts.
 - Records operations and errors for troubleshooting.
 - Prevents multiple application instances.
 - Disconnects from Sophos safely before exit.
