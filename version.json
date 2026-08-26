@@ -1,6 +1,6 @@
 {
-  "version": "1.2.7",
-  "installer": "SophosSecurityManager-Setup-1.2.7-win-x64.exe",
+  "version": "1.2.70",
+  "installer": "SophosSecurityManager-Setup-1.2.70-win-x64.exe",
   "releaseUrl": "https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest",
   "mandatory": false
 }
