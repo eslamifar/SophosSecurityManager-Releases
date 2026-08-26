@@ -15,11 +15,15 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
-Current version: **1.2.67**
+Current version: **1.2.7**
 
 ## What the application does
 
 - Connects to Sophos Firewall through the XML API.
+- Uses a consistent Google Material Design skin across the main workspace, nested tabs, dialogs, buttons, selectors, and progress controls.
+- Lists and edits network interfaces with assignment-aware fields and WAN gateway details.
+- Lists gateways with connection-state highlighting and supports guarded add, edit, and delete operations.
+- Lists static routes and supports add, edit, and delete operations with interface and IP-family selection.
 - Negotiates the available XML API version and selects a compatibility profile for SFOS 17.5, 18/19, 20, 21, and newer releases.
 - Reads IPv4 addresses from a local TXT file or an online source.
 - Displays valid, duplicate, and invalid entries.
