@@ -15,7 +15,7 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
-Current version: **1.2.73**
+Current version: **1.2.74**
 
 ## What the application does
 
@@ -53,6 +53,10 @@ Current version: **1.2.73**
 - Replaces MaterialSkin with compact standard Windows controls to prevent clipped buttons and unnecessary scrolling.
 - Uses larger color-coded tabs with a distinct active state across the main, Objects, and Network views.
 - Keeps the Routing grid stretched across the full available width and improves compact IP import and backup layouts.
+- Renames Objects to IP Management and enables IP Management, Network, and Manage only after their initial Sophos data loads successfully.
+- Uses the application icon consistently across the main window and all dialogs.
+- Opens a configured FTP backup server and path in Windows Explorer without exposing credentials in the URL.
+- Places the FTP server/path and FTP username/password pairs on compact shared rows.
 - Provides guarded Web Admin handoffs for device restart, shutdown, and configuration restore where the public XML API does not expose a supported operation.
 - Displays detailed rolling diagnostic logs inside the application, including sanitized Sophos API response details.
 - Keeps unsupported restart, shutdown, and restore controls disabled on SFOS versions where the public XML API does not expose them.
