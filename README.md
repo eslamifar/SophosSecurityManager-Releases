@@ -15,7 +15,7 @@ This link always opens the newest published release. The application also checks
 
 Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
 
-Current version: **1.2.71**
+Current version: **1.2.72**
 
 ## What the application does
 
@@ -48,6 +48,8 @@ Current version: **1.2.71**
 - Disconnects from Sophos safely before exit.
 - Organizes the main workspace into `Home`, `IPs`, `Groups`, `Manage`, and `Logging` tabs.
 - Schedules an immediate encrypted or unencrypted local Sophos configuration backup through the supported XML API.
+- Loads the current Sophos backup configuration and applies Local, Email, or FTP mode, scheduling, destination, and replacement credential settings through the XML API.
+- Improves Home and Network dialog layouts to keep connection controls visible and avoid unnecessary scrolling at the supported window size.
 - Provides guarded Web Admin handoffs for device restart, shutdown, and configuration restore where the public XML API does not expose a supported operation.
 - Displays detailed rolling diagnostic logs inside the application, including sanitized Sophos API response details.
 - Keeps unsupported restart, shutdown, and restore controls disabled on SFOS versions where the public XML API does not expose them.
