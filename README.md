@@ -3,120 +3,180 @@
 [![Latest release](https://img.shields.io/github/v/release/eslamifar/SophosSecurityManager-Releases?display_name=tag&sort=semver)](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest)
 [![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078D6)](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest)
 
-Sophos Security Manager is a Windows desktop application for safely importing and managing large IPv4 threat-intelligence lists on Sophos Firewall through the Sophos XML API.
+Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-> This repository contains public release files only. The application source code is maintained in a separate private repository.
+Current version: **1.3.0**
 
-## Download the latest version
+## Download
 
-**[Download the latest Sophos Security Manager release](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest)**
+**[Download the latest Sophos Security Manager installer](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest)**
 
-This link always opens the newest published release. The application also checks this repository for updates and can download and launch a newer installer.
+The installer is self-contained; a separate .NET runtime is normally not required.
 
-Current update metadata: [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json)
+## Important: Threat Collector service installation
 
-Current version: **1.2.74**
+Version 1.3.0 installs a Windows service named:
 
-## What the application does
+```text
+SophosSecurityManagerThreatCollector
+```
 
-- Connects to Sophos Firewall through the XML API.
-- Uses a consistent Google Material Design skin across the main workspace, nested tabs, dialogs, buttons, selectors, and progress controls.
-- Lists and edits network interfaces with assignment-aware fields and WAN gateway details.
-- Lists gateways with connection-state highlighting and supports guarded add, edit, and delete operations.
-- Lists static routes and supports add, edit, and delete operations with interface and IP-family selection.
-- Negotiates the available XML API version and selects a compatibility profile for SFOS 17.5, 18/19, 20, 21, and newer releases.
-- Reads IPv4 addresses from a local TXT file or an online source.
-- Displays valid, duplicate, and invalid entries.
-- Runs Dry Run / Analyze before production changes.
-- Detects existing Sophos host objects and avoids duplicates.
-- Creates capacity-aware groups such as `Afta-001` and `Afta-002`.
-- Uses the exact base group name when the entire list fits in one group.
-- Fills free slots in existing managed groups before creating new groups.
-- Imports in controlled batches with progress, elapsed time, safe stop, and last-batch rollback.
-- Offers **Safe** mode for maximum verification and **Fast** mode with cached inventory and periodic synchronization for large imports.
-- Can create managed host names such as `groupAfta-001-1.2.3.4`.
-- Refreshes group information during long imports.
-- Shows groups, member counts, host names, and addresses.
-- Provides an `ALL` view for grouped and independent IP host objects.
-- Searches and filters grouped or independent host objects and shows group membership in the `ALL` view.
-- Displays inventory-health information before management operations.
-- Creates a JSON safety snapshot before import and exports operation reports in CSV and JSON formats.
-- Supports safe single-host and group management while import is stopped.
-- Supports adding IPv4 network objects in CIDR notation (for example `192.168.0.0/23`) as well as individual IPv4 hosts.
-- Records operations and errors for troubleshooting.
-- Prevents multiple application instances.
-- Disconnects from Sophos safely before exit.
-- Organizes the main workspace into `Home`, `IPs`, `Groups`, `Manage`, and `Logging` tabs.
-- Schedules an immediate encrypted or unencrypted local Sophos configuration backup through the supported XML API.
-- Loads the current Sophos backup configuration and applies Local, Email, or FTP mode, scheduling, destination, and replacement credential settings through the XML API.
-- Improves Home and Network dialog layouts to keep connection controls visible and avoid unnecessary scrolling at the supported window size.
-- Replaces MaterialSkin with compact standard Windows controls to prevent clipped buttons and unnecessary scrolling.
-- Uses larger color-coded tabs with a distinct active state across the main, Objects, and Network views.
-- Keeps the Routing grid stretched across the full available width and improves compact IP import and backup layouts.
-- Renames Objects to IP Management and enables IP Management, Network, and Manage only after their initial Sophos data loads successfully.
-- Uses the application icon consistently across the main window and all dialogs.
-- Opens a configured FTP backup server and path in Windows Explorer without exposing credentials in the URL.
-- Places the FTP server/path and FTP username/password pairs on compact shared rows.
-- Provides guarded Web Admin handoffs for device restart, shutdown, and configuration restore where the public XML API does not expose a supported operation.
-- Displays detailed rolling diagnostic logs inside the application, including sanitized Sophos API response details.
-- Keeps unsupported restart, shutdown, and restore controls disabled on SFOS versions where the public XML API does not expose them.
-- Shows where locally created firewall backups can be listed, downloaded, or deleted safely in Sophos Web Admin.
-- Disables Save Settings immediately while a connection attempt is running and restores it after a failed connection or disconnect.
-- Detects API-disabled, authentication, TLS, timeout, and network connection failures and displays targeted recovery guidance.
-- Places Base group name and Group capacity together in one aligned Home-tab row.
-- Provides virtual `# ALL` and `# DUPLICATES` inventory views, separated visually from real Sophos groups.
-- Supports sortable host name, IP address, and group-membership columns.
-- Supports configurable automatic disconnect after inactivity.
-- Shows update download progress inside the application and warns when an available update is declined.
-- Centers update downloads over the main window and provides real Pause/Resume and Cancel controls.
-- Shows a safe direct GitHub installer link when an in-app update download fails.
-- Allows the main window to be resized, minimized, and maximized while preserving a safe minimum size.
-- Restores the last valid main-window size, position, and maximized state on the next run.
-- Shows an inline startup update-check status on Home with a bounded wait before enabling the main application.
+Setup performs these operations automatically with administrator permission:
 
-## Safety features
+1. Copies the collector into the application's `ThreatCollector` directory.
+2. Creates/configures it as an **Automatic** Windows service.
+3. Starts the service on UDP port **514**.
+4. Adds an inbound Windows Firewall rule named **Sophos Security Manager Syslog** for UDP 514.
+5. Stops and restarts the service safely during upgrades.
+6. Removes the service and firewall rule during uninstall.
 
-1. Sophos must be connected before management features are enabled.
-2. Dry Run / Analyze must finish before import starts.
-3. The user must confirm that a Sophos configuration backup exists.
-4. Imports run in limited batches.
-5. Stop waits for the current batch to finish safely.
-6. Failed batches are rolled back when possible.
-7. Group capacity is enforced.
-8. Duplicate and existing host objects are detected before creation.
-9. Destructive controls are disabled during automatic import.
+The service runs independently of the desktop application. Closing Sophos Security Manager does **not** stop threat collection.
 
-> Always create and verify a Sophos configuration backup before importing or deleting objects.
+After installation, open the **Threats** tab to see the service state and uptime or use its **Start service**, **Restart service**, **Stop service**, and **Windows Services** controls.
 
-## Requirements
+## Configure Sophos for Threats
 
-- Windows 10 or Windows 11, 64-bit
-- A supported Sophos Firewall with the XML API enabled
-- Network access to the Sophos API HTTPS port
-- A Sophos administrator account with the required permissions
+The service cannot receive threat data until Sophos forwards Syslog events to this computer.
 
-The installer is self-contained; a separate .NET runtime is not normally required.
+1. In Sophos Web Admin, open **System services > Log settings**.
+2. Add or edit a Syslog server.
+3. Set **Server IP** to this Windows computer's IP as seen from the Sophos network.
+4. Set **Port** to `514`.
+5. Select **Information** as the severity threshold when Moderate events are required.
+6. In the Syslog destination column, enable:
+   - **IPS > Anomaly**
+   - **IPS > Signatures**
+   - **Advanced threat protection > ATP events**
+7. Apply the Sophos settings.
+
+The application checks the target IP, port, IPS/ATP selections, and severity when it loads Threats. If the XML API cannot verify these settings, it reports that verification was unavailable instead of showing a false definitive warning.
+
+## Threats tab
+
+### Threat IP table
+
+- Filters events by **Critical**, **Major**, and optional **Moderate** severity.
+- Uses a configurable lookback period from 1 to 365 days.
+- Groups repeated events by public source IP.
+- Shows severity, source IP, attack count, latest threat/signature, last-seen time, country, action, and interface.
+- Highlights Critical, Major, and Moderate rows with different colors.
+- Lets the user select one or more public source IPs and add them to an existing Sophos IP group.
+- Rejects private or invalid addresses from the add-to-group action.
+
+### Collector service controls
+
+- Displays the exact Windows service name.
+- Shows Running/Stopped state, UDP 514 status, and running duration.
+- Supports Start, Restart, and Stop with administrator elevation.
+- Opens the Windows Services console for manual inspection.
+
+### Collector report
+
+The lower report table explains what the service has received:
+
+- **Packets received:** all Syslog datagrams reaching the service and the time of the last packet.
+- **Threats saved:** accepted IPS/ATP events and the time of the last saved threat.
+- **Non-threat logs ignored:** firewall, web, antivirus, system, and other messages that are intentionally not shown as Threat IPs.
+- **Missing source IP:** IPS/ATP messages without a recognized source-address field.
+- **Unknown severity:** IPS/ATP messages whose severity cannot yet be mapped.
+- **Other rejected:** remaining rejected messages and the latest reason.
+- **Data file:** the JSONL file used by the desktop application.
+
+Common Sophos values such as `Medium`, `Information`, `Informational`, `Info`, `Notice`, and `Notification` are mapped to Moderate. Alternate source/destination, signature, component, and Intrusion Prevention field names are also recognized.
+
+### Live collection versus Sophos historical reports
+
+Sophos Web Admin Reports reads historical records stored on the firewall. The Windows collector receives only events forwarded **after** Syslog was configured and the service was running.
+
+- Existing historical report rows cannot be downloaded or backfilled through Syslog.
+- If an attack occurred before service installation, it will remain visible in Sophos Reports but will not appear in the application.
+- A new IPS/ATP event must be generated or received to validate end-to-end collection.
+- Receiving many Firewall Rule messages with zero saved threats means networking is working, but no new IPS/ATP event has arrived yet.
+
+### Threat data and diagnostics
+
+- Threat events: `%ProgramData%\SophosSecurityManager\Threats\threats.jsonl`
+- Collector status: `%ProgramData%\SophosSecurityManager\Threats\collector-status.json`
+- Collector errors/rejected samples: `%ProgramData%\SophosSecurityManager\Logs`
+
+Rejected-message samples are rate-limited to avoid excessive disk usage. Collector status is also throttled while preserving immediate writes for accepted threats.
+
+## Other workspaces
+
+### Home
+
+- Configures the Sophos host/IP, HTTPS port, credentials, base group, capacity, SSL verification, and inactivity disconnect.
+- Displays firewall/API information and sequential load status.
+- Keeps IP Management, Network, Threats, and Manage disabled until connection and initial loading complete.
+- Disables them again after disconnect.
+
+### IP Management
+
+- Imports IPv4 intelligence from TXT files or online sources.
+- Previews valid/invalid/duplicate entries and runs a Dry Run before changes.
+- Supports guarded Safe/Fast batch import, stop-after-batch, and last-batch rollback.
+- Creates, searches, sorts, updates, and removes supported IP hosts, CIDR network objects, and groups.
+- Provides `# ALL` and `# DUPLICATES` inventory views.
+
+### Network
+
+- Lists and edits supported interface properties.
+- Displays gateway health and protects interface-managed WAN gateways.
+- Creates, edits, and deletes API-managed gateways where supported.
+- Lists and manages supported static routes with validated interface, prefix, and IP-family selections.
+
+### Manage
+
+- Loads and applies Local, Email, and FTP backup settings and schedules.
+- Preserves stored Sophos passwords unless replacements are entered.
+- Requests immediate configuration backups.
+- Opens the configured FTP destination in Windows Explorer without placing credentials in the URL.
+
+### Logging
+
+- Displays the latest application log with automatic refresh.
+- Supports Refresh, Copy all, Clear view, and Open log folder.
+- Application logs are stored at `%LocalAppData%\SophosSecurityManager\logs`.
 
 ## Installation and updates
 
 1. Open the [latest release](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest).
 2. Download `SophosSecurityManager-Setup-<version>-win-x64.exe`.
-3. Run Setup and approve elevation if Windows requests it.
-4. Existing installations are detected as update or repair operations and retain their installation path.
+3. Run Setup and approve administrator elevation.
+4. Setup detects an existing installation and performs an update or repair in the same directory.
 
-Versions affected by the earlier updater file-lock issue may require one manual update to version 1.1.5 or later. Later supported versions can use the application's update checker.
+The application checks this repository for new releases. Downloads include progress, Pause/Resume, Cancel, SHA-256 verification, and a direct browser link if the in-app download fails.
 
-## Publishing a new version
+When closing normally, the desktop application clears its XML API state first. The XML API is request-based and does not keep a persistent authenticated session; the independent Threat Collector remains running.
 
-Update information is stored in [version.json](https://github.com/eslamifar/SophosSecurityManager-Releases/blob/main/version.json).
+## Requirements
 
-1. Publish the installer as a GitHub Release asset.
-2. Mark the release as **Latest**.
-3. Update `version.json` with the version and installer filename.
+- Windows 10 or Windows 11 x64
+- Sophos Firewall 17.5 or later
+- Sophos XML API enabled and this computer's IP allowed
+- Network access to the Sophos HTTPS API port
+- Administrator permission for installation and service control
+- Sophos Syslog configuration described above for the Threats tab
 
-The README download link and version badge use GitHub's `releases/latest` endpoint, so they update automatically whenever a new latest release is published.
+## Supported API limitations
 
-## Contact
+The supported XML API does not reliably expose every Web Admin operation. Device restart/shutdown, direct download of a local firewall backup, and upload/restore of a backup file remain disabled and must be completed in Sophos Web Admin. Writable interface, gateway, route, and backup fields can also vary by SFOS/API version.
+
+## Safety
+
+- Management features remain disabled until Sophos is connected and data is loaded.
+- Import requires analysis and backup confirmation.
+- Imports run in limited batches with safe-stop and rollback support.
+- Group capacity and duplicate/existing objects are checked.
+- Destructive controls are disabled during automatic import.
+
+Always create and verify a Sophos configuration backup before importing or deleting objects.
+
+## Release history and contact
+
+- [Latest release and release notes](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest)
+- [Complete changelog](https://github.com/eslamifar/SophosSecurityManager/blob/master/CHANGELOG.md)
+- [Source-project documentation](https://github.com/eslamifar/SophosSecurityManager/blob/master/README.md)
 
 Developed by **Mohsen Eslamifar**.
 
