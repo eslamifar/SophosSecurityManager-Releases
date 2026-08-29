@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.0**
+Current version: **1.3.10**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.0 installs a Windows service named:
+Version 1.3.10 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -55,10 +55,11 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 
 ### Threat IP table
 
-- Filters events by **Critical**, **Major**, and optional **Moderate** severity.
+- Filters events by **Critical**, **Major**, and **Moderate** severity; all three are enabled by default.
 - Uses a configurable lookback period from 1 to 365 days.
 - Groups repeated events by public source IP.
 - Shows severity, source IP, attack count, latest threat/signature, last-seen time, country, action, and interface.
+- Shows Sophos group membership for exact IP hosts and containing CIDR network objects.
 - Highlights Critical, Major, and Moderate rows with different colors.
 - Lets the user select one or more public source IPs and add them to an existing Sophos IP group.
 - Rejects private or invalid addresses from the add-to-group action.
@@ -106,6 +107,8 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 ### Home
 
 - Configures the Sophos host/IP, HTTPS port, credentials, base group, capacity, SSL verification, and inactivity disconnect.
+- Opens the currently entered Sophos Web Admin address without requiring settings to be saved first.
+- Uses 15 minutes as the default inactivity disconnect period, with Off, 5, 10, 15, and 30 minute choices.
 - Displays firewall/API information and sequential load status.
 - Keeps IP Management, Network, Threats, and Manage disabled until connection and initial loading complete.
 - Disables them again after disconnect.
@@ -137,6 +140,13 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Displays the latest application log with automatic refresh.
 - Supports Refresh, Copy all, Clear view, and Open log folder.
 - Application logs are stored at `%LocalAppData%\SophosSecurityManager\logs`.
+- Logs roll daily and the latest 14 daily files are retained.
+
+### Help
+
+- Opens an installed English Microsoft Compiled HTML Help (`.chm`) file from Home.
+- Provides categorized Home, IP Management, Network, Threats, Manage, Logging, setup, and troubleshooting topics.
+- Includes a table of contents, index, and full-text search.
 
 ## Installation and updates
 
