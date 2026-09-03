@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.25**
+Current version: **1.3.30**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.25 includes a Windows service named:
+Version 1.3.30 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -56,7 +56,7 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 ### Threat IP table
 
 - Filters events by **Critical**, **Major**, and **Moderate** severity; all three are enabled by default.
-- Uses a configurable lookback period from 1 to 365 days.
+- Uses a configurable calendar-day lookback period from 1 to 365 days: 1 starts at local midnight today, while N includes today and the preceding N-1 dates to match Sophos reports.
 - Groups repeated events by public source IP.
 - Shows severity, source IP, attack count, latest threat/signature, last-seen time, country, action, and interface.
 - Shows Sophos group membership for exact IP hosts and containing CIDR network objects.
@@ -107,12 +107,14 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 ### Home
 
 - Configures the Sophos host/IP, HTTPS port, credentials, base group, capacity, SSL verification, and inactivity disconnect.
+- Provides a compact icon dashboard for About, Help, Widget, Web Admin, Save Settings, and Connect/Disconnect, with a dedicated status row for connection, loading, and update progress.
 - Opens the currently entered Sophos Web Admin address without requiring settings to be saved first.
 - Uses 15 minutes as the default inactivity disconnect period, with Never disconnect, 5, 10, 15, and 30 minute choices.
 - Displays firewall/API information and sequential load status.
 - Keeps Hosts, Network, Threats, and Manage disabled until connection and initial loading complete.
 - Disables them again after disconnect.
 - Opens or closes the standalone Widget and updates the button label to match its running state.
+- Minimizing Manager hides it to the notification area without disconnecting; double-click or Show Manager restores it, and Exit closes it completely.
 
 ### Hosts
 
@@ -147,12 +149,12 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 ### Desktop Widget
 
-- Runs independently using `SophosSecurityManager.UI.exe --widget`; version 1.3.24 no longer installs a duplicate standalone Widget runtime.
+- Runs independently using `SophosSecurityManager.UI.exe --widget`; Setup does not install a duplicate standalone Widget runtime.
 - Shows connection heartbeat, gateway health, collector state, latest backup, and threats from the last 24 hours.
 - Highlights disconnected gateways, notifies when a gateway newly needs attention, and opens Manager from the Gateway card.
 - Uses green for backups up to 10 days old, amber for more than 10 through 30 days, and red for older or unavailable backup state.
-- Opens or closes Manager from the Widget button or tray menu; Manager can likewise open or close the Widget using reliable named process coordination.
-- Supports Always on top, tray hiding, new-threat notifications, single-instance protection, and optional Windows startup.
+- Opens Manager or restores its notification-area-hidden window without launching a duplicate process; Manager can likewise open or close the Widget using reliable named process coordination.
+- Uses a dedicated high-contrast Widget window and tray icon, and supports an explicit close control, Always on top, tray hiding, new-threat notifications, single-instance protection, and optional Windows startup.
 
 ### Help
 
