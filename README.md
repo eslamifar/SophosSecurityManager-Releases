@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.10**
+Current version: **1.3.23**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.10 includes a Windows service named:
+Version 1.3.23 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -76,14 +76,14 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 The lower report table explains what the service has received:
 
 - **Packets received:** all Syslog datagrams reaching the service and the time of the last packet.
-- **Threats saved:** accepted IPS/ATP events and the time of the last saved threat.
+- **Threat events stored:** total events currently stored, unique source IPs, events accepted during the current service run, and the time of the latest stored threat.
 - **Non-threat logs ignored:** firewall, web, antivirus, system, and other messages that are intentionally not shown as Threat IPs.
 - **Missing source IP:** IPS/ATP messages without a recognized source-address field.
 - **Unknown severity:** IPS/ATP messages whose severity cannot yet be mapped.
 - **Other rejected:** remaining rejected messages and the latest reason.
 - **Data file:** the JSONL file used by the desktop application.
 
-Common Sophos values such as `Medium`, `Information`, `Informational`, `Info`, `Notice`, and `Notification` are mapped to Moderate. Alternate source/destination, signature, component, and Intrusion Prevention field names are also recognized.
+Explicit Sophos detection/signature severity takes precedence over Syslog message priority. When detection severity is absent, IPS `Warning` transport priority is treated as Moderate because transport priority does not necessarily represent attack severity. Compatible legacy IPS records previously stored as Major are normalized when read. Common Sophos values such as `Medium`, `Information`, `Informational`, `Info`, `Notice`, and `Notification` are mapped to Moderate. Alternate source/destination, signature, component, and Intrusion Prevention field names are also recognized.
 
 ### Live collection versus Sophos historical reports
 
@@ -108,18 +108,21 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 - Configures the Sophos host/IP, HTTPS port, credentials, base group, capacity, SSL verification, and inactivity disconnect.
 - Opens the currently entered Sophos Web Admin address without requiring settings to be saved first.
-- Uses 15 minutes as the default inactivity disconnect period, with Off, 5, 10, 15, and 30 minute choices.
+- Uses 15 minutes as the default inactivity disconnect period, with Never disconnect, 5, 10, 15, and 30 minute choices.
 - Displays firewall/API information and sequential load status.
-- Keeps IP Management, Network, Threats, and Manage disabled until connection and initial loading complete.
+- Keeps Hosts, Network, Threats, and Manage disabled until connection and initial loading complete.
 - Disables them again after disconnect.
+- Opens or closes the standalone Widget and updates the button label to match its running state.
 
-### IP Management
+### Hosts
 
 - Imports IPv4 intelligence from TXT files or online sources.
 - Previews valid/invalid/duplicate entries and runs a Dry Run before changes.
 - Supports guarded Safe/Fast batch import, stop-after-batch, and last-batch rollback.
 - Creates, searches, sorts, updates, and removes supported IP hosts, CIDR network objects, and groups.
 - Provides `# ALL` and `# DUPLICATES` inventory views.
+- Includes MAC-host creation and editing with validated single or multi-address input and duplicate detection.
+- Includes FQDN hosts and groups, URL-to-hostname normalization, membership filtering, and safe removal from groups.
 
 ### Network
 
@@ -142,10 +145,17 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Application logs are stored at `%LocalAppData%\SophosSecurityManager\logs`.
 - Logs roll daily and the latest 14 daily files are retained.
 
+### Desktop Widget
+
+- Runs independently from Manager and shows connection heartbeat, collector state, latest backup, and threats from the last 24 hours.
+- Uses green for backups up to 10 days old, amber for more than 10 through 30 days, and red for older or unavailable backup state.
+- Opens or closes Manager from the Widget button or tray menu; Manager can likewise open or close the Widget.
+- Supports Always on top, tray hiding, new-threat notifications, single-instance protection, and optional Windows startup.
+
 ### Help
 
 - Opens an installed English Microsoft Compiled HTML Help (`.chm`) file from Home.
-- Provides categorized Home, IP Management, Network, Threats, Manage, Logging, setup, and troubleshooting topics.
+- Provides categorized Home, Hosts (IP, Group, MAC and FQDN), Network, Threats, Manage, Logging, Widget, installation, setup, and troubleshooting topics.
 - Includes a table of contents, index, and full-text search.
 
 ## Installation and updates
