@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.23**
+Current version: **1.3.24**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.23 includes a Windows service named:
+Version 1.3.24 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -147,9 +147,11 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 ### Desktop Widget
 
-- Runs independently from Manager and shows connection heartbeat, collector state, latest backup, and threats from the last 24 hours.
+- Runs independently using `SophosSecurityManager.UI.exe --widget`; version 1.3.24 no longer installs a duplicate standalone Widget runtime.
+- Shows connection heartbeat, gateway health, collector state, latest backup, and threats from the last 24 hours.
+- Highlights disconnected gateways, notifies when a gateway newly needs attention, and opens Manager from the Gateway card.
 - Uses green for backups up to 10 days old, amber for more than 10 through 30 days, and red for older or unavailable backup state.
-- Opens or closes Manager from the Widget button or tray menu; Manager can likewise open or close the Widget.
+- Opens or closes Manager from the Widget button or tray menu; Manager can likewise open or close the Widget using reliable named process coordination.
 - Supports Always on top, tray hiding, new-threat notifications, single-instance protection, and optional Windows startup.
 
 ### Help
@@ -164,6 +166,8 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 2. Download `SophosSecurityManager-Setup-<version>-win-x64.exe`.
 3. Run Setup and approve administrator elevation.
 4. Setup detects an existing installation and performs an update or repair in the same directory.
+
+The Setup executable uses the same high-contrast icon as Sophos Security Manager. Upgrading to version 1.3.24 or later removes the obsolete standalone `Widget` directory; Widget shortcuts now launch the main executable in independent Widget mode.
 
 The application checks this repository for new releases. Downloads include progress, Pause/Resume, Cancel, SHA-256 verification, and a direct browser link if the in-app download fails.
 
