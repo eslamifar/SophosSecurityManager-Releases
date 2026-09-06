@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.30**
+Current version: **1.3.31**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.30 includes a Windows service named:
+Version 1.3.31 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -135,10 +135,15 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 ### Manage
 
+- Organizes management features into **Backup / Restore**, **Device Power**, and **Rules** subtabs.
 - Loads and applies Local, Email, and FTP backup settings and schedules.
 - Preserves stored Sophos passwords unless replacements are entered.
 - Requests immediate configuration backups.
 - Opens the configured FTP destination in Windows Explorer without placing credentials in the URL.
+- Creates, edits, duplicates, enables/disables, and deletes up to 10 locally persisted threat rules.
+- Matches public source IPv4 addresses by attack count, severity, and a rolling minute/hour/day window.
+- Previews matching IPs and current Sophos memberships before manually applying a rule to its target group.
+- Reuses existing Host objects, preserves unrelated memberships, and supports permanent or expiring rule-created memberships while coordinating overlapping rules.
 
 ### Logging
 
@@ -150,11 +155,11 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 ### Desktop Widget
 
 - Runs independently using `SophosSecurityManager.UI.exe --widget`; Setup does not install a duplicate standalone Widget runtime.
-- Shows connection heartbeat, gateway health, collector state, latest backup, and threats from the last 24 hours.
+- Shows connection heartbeat, gateway health, collector state, latest backup, and threats from the current local calendar day; the threat card color reflects the highest severity found.
 - Highlights disconnected gateways, notifies when a gateway newly needs attention, and opens Manager from the Gateway card.
 - Uses green for backups up to 10 days old, amber for more than 10 through 30 days, and red for older or unavailable backup state.
-- Opens Manager or restores its notification-area-hidden window without launching a duplicate process; Manager can likewise open or close the Widget using reliable named process coordination.
-- Uses a dedicated high-contrast Widget window and tray icon, and supports an explicit close control, Always on top, tray hiding, new-threat notifications, single-instance protection, and optional Windows startup.
+- Opens Manager or restores its notification-area-hidden window without launching a duplicate process; starting Manager again also restores its existing window.
+- Uses a dedicated high-contrast Widget window and tray icon, and supports an explicit close control, Always on top, new-threat notifications, single-instance protection, and optional Windows startup.
 
 ### Help
 
