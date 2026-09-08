@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.31**
+Current version: **1.3.32**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.31 includes a Windows service named:
+Version 1.3.32 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -156,10 +156,11 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 - Runs independently using `SophosSecurityManager.UI.exe --widget`; Setup does not install a duplicate standalone Widget runtime.
 - Shows connection heartbeat, gateway health, collector state, latest backup, and threats from the current local calendar day; the threat card color reflects the highest severity found.
-- Highlights disconnected gateways, notifies when a gateway newly needs attention, and opens Manager from the Gateway card.
+- Highlights disconnected gateways, notifies when a gateway newly needs attention, and makes every status card open Manager directly at Home, Network > Gateways, Manage > Backup / Restore, or Threats as appropriate.
 - Uses green for backups up to 10 days old, amber for more than 10 through 30 days, and red for older or unavailable backup state.
 - Opens Manager or restores its notification-area-hidden window without launching a duplicate process; starting Manager again also restores its existing window.
-- Uses a dedicated high-contrast Widget window and tray icon, and supports an explicit close control, Always on top, new-threat notifications, single-instance protection, and optional Windows startup.
+- Uses an embedded multi-resolution Widget window, tray, and shortcut icon, and supports an explicit close control, Always on top, new-threat notifications, single-instance protection, and optional Windows startup.
+- Groups Manager, Widget, and Uninstall shortcuts under Sophos Security Manager in the Start Menu; upgrades remove obsolete standalone shortcuts and use a dedicated uninstall icon.
 
 ### Help
 
