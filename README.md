@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.33**
+Current version: **1.3.34**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.33 includes a Windows service named:
+Version 1.3.34 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -130,6 +130,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 - Lists and edits supported interface properties.
 - Displays gateway health and protects interface-managed WAN gateways.
+- Refreshes gateway health every 30 seconds while connected and updates both the Network table and Widget without reloading interfaces or routes.
 - Creates, edits, and deletes API-managed gateways where supported.
 - Lists and manages supported static routes with validated interface, prefix, and IP-family selections.
 
