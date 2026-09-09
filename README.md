@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.34**
+Current version: **1.3.35**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.34 includes a Windows service named:
+Version 1.3.35 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
