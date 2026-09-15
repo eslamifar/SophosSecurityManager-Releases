@@ -1,6 +1,0 @@
-{
-  "version": "1.3.10",
-  "installer": "SophosSecurityManager-Setup-1.3.10-win-x64.exe",
-  "releaseUrl": "https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest",
-  "mandatory": false
-}

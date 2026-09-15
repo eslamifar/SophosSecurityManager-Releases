@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.38**
+Current version: **1.3.39**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.38 includes a Windows service named:
+Version 1.3.39 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -27,7 +27,7 @@ Setup performs these operations automatically with administrator permission:
 2. Creates/configures it as an **Automatic** Windows service.
 3. Starts the service on UDP port **514**.
 4. Adds an inbound Windows Firewall rule named **Sophos Security Manager Syslog** for UDP 514.
-5. Stops and restarts the service safely during upgrades.
+5. During upgrades, stops the service and waits for complete shutdown before replacing files; Setup aborts safely if shutdown cannot be confirmed.
 6. Removes the service and firewall rule during uninstall.
 
 The service runs independently of the desktop application. Closing Sophos Security Manager does **not** stop threat collection.
@@ -56,7 +56,7 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 ### Threat IP table
 
 - Filters events by **Critical**, **Major**, and **Moderate** severity; all three are enabled by default.
-- Uses a configurable calendar-day lookback period from 1 to 365 days: 1 starts at local midnight today, while N includes today and the preceding N-1 dates to match Sophos reports.
+- Uses a configurable calendar-day lookback period from 1 to 365 days and preserves the calendar date carried by Sophos even when its UTC offset differs from Windows.
 - Groups repeated events by public source IP.
 - Shows severity, source IP, attack count, latest threat/signature, last-seen time, country, action, and interface.
 - Shows Sophos group membership for exact IP hosts and containing CIDR network objects.
@@ -130,7 +130,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 - Lists and edits supported interface properties.
 - Displays gateway health and protects interface-managed WAN gateways.
-- Refreshes gateway health every 30 seconds while connected and updates both the Network table and Widget without reloading interfaces or routes.
+- Refreshes gateway health every hour while connected and updates both the Network table and Widget without reloading interfaces or routes.
 - Creates, edits, and deletes API-managed gateways where supported.
 - Lists and manages supported static routes with validated interface, prefix, and IP-family selections.
 
@@ -156,7 +156,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 ### Desktop Widget
 
 - Runs independently using `SophosSecurityManager.UI.exe --widget`; Setup does not install a duplicate standalone Widget runtime.
-- Uses a shorter four-card layout for connection heartbeat, gateway health, latest backup, and threats from the current local calendar day.
+- Uses a shorter four-card layout for connection heartbeat, gateway health, latest backup, and threats from the current Sophos calendar date, including events whose reported UTC offset differs from Windows.
 - Integrates collector health into the Threats card; when the Windows service is stopped, the card shows **Service is not running** in red instead of a potentially misleading threat count.
 - Highlights disconnected gateways, notifies when a gateway newly needs attention, and makes every status card open Manager directly at Home, Network > Gateways, Manage > Backup / Restore, or Threats as appropriate.
 - Uses green for backups up to 10 days old, amber for more than 10 through 30 days, and red for older or unavailable backup state.
@@ -181,7 +181,7 @@ The Setup executable uses the same high-contrast icon as Sophos Security Manager
 
 Release builds protect all first-party Manager, Widget, API, Core, Infrastructure, Models, and Services assemblies consistently. Before Setup is produced, the release builder launches both packaged Manager and Widget modes with strict startup error handling; either mode failing its smoke test stops the release build.
 
-The application checks this repository for new releases. Downloads include progress, Pause/Resume, Cancel, SHA-256 verification, and a direct browser link if the in-app download fails.
+The application checks this repository's GitHub Releases API for new releases. The latest release tag and installer asset are authoritative; no separate `version.json` manifest is used. Downloads include progress, Pause/Resume, Cancel, SHA-256 verification, and a direct browser link if the in-app download fails.
 
 When closing normally, the desktop application clears its XML API state first. The XML API is request-based and does not keep a persistent authenticated session; the independent Threat Collector remains running.
 
