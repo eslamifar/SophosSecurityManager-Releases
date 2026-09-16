@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.40**
+Current version: **1.3.41**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.40 includes a Windows service named:
+Version 1.3.41 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -149,6 +149,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Maintains expiring rule-created memberships while Manager is closed, preserves pre-existing manual memberships, and pauses automation after three consecutive failures.
 - Stores shared Rules and automation state in `%ProgramData%\SophosSecurityManager\Automation`; previous per-user Rules migrate automatically when Manager starts.
 - Requires running Manager as Administrator to view or change shared Rules and automation settings; Setup limits the Automation directory to Administrators and SYSTEM.
+- If protected Rules storage is inaccessible, the Sophos connection stays active while Rules and automation actions are disabled with a repair message. The **Run as Administrator** button at the bottom of Rules requests UAC elevation and restarts Manager; cancelling UAC leaves the current session open.
 - Shows automation status and connection testing under **Manage > Service**; pausing automation does not stop Syslog collection.
 
 ### Logging
