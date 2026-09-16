@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.39**
+Current version: **1.3.40**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.39 includes a Windows service named:
+Version 1.3.40 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -32,7 +32,7 @@ Setup performs these operations automatically with administrator permission:
 
 The service runs independently of the desktop application. Closing Sophos Security Manager does **not** stop threat collection.
 
-After installation, open the **Threats** tab to see the service state and uptime or use its **Start service**, **Restart service**, **Stop service**, and **Windows Services** controls.
+After installation, open **Manage > Service** to see the service state and uptime or use its **Start service**, **Restart service**, **Stop service**, and **Windows Services** controls. Collector diagnostics remain in Threats.
 
 ## Configure Sophos for Threats
 
@@ -55,7 +55,7 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 
 ### Threat IP table
 
-- Filters events by **Critical**, **Major**, and **Moderate** severity; all three are enabled by default.
+- Separate **All**, **Critical**, **Major**, **Moderate**, and dynamically discovered historical severity tabs show their current IP counts; standard tabs remain visible when empty.
 - Uses a configurable calendar-day lookback period from 1 to 365 days and preserves the calendar date carried by Sophos even when its UTC offset differs from Windows.
 - Groups repeated events by public source IP.
 - Shows severity, source IP, attack count, latest threat/signature, last-seen time, country, action, and interface.
@@ -64,7 +64,7 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 - Lets the user select one or more public source IPs and add them to an existing Sophos IP group.
 - Rejects private or invalid addresses from the add-to-group action.
 
-### Collector service controls
+### Collector service controls (Manage > Service)
 
 - Displays the exact Windows service name.
 - Shows Running/Stopped state, UDP 514 status, and running duration.
@@ -136,7 +136,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 ### Manage
 
-- Organizes management features into **Backup / Restore**, **Device Power**, and **Rules** subtabs.
+- Organizes management features into **Backup / Restore**, **Device Power**, **Rules**, and **Service** subtabs.
 - Loads and applies Local, Email, and FTP backup settings and schedules.
 - Preserves stored Sophos passwords unless replacements are entered.
 - Requests immediate configuration backups.
@@ -145,6 +145,11 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Matches public source IPv4 addresses by attack count, severity, and a rolling minute/hour/day window.
 - Previews matching IPs and current Sophos memberships before manually applying a rule to its target group.
 - Reuses existing Host objects, preserves unrelated memberships, and supports permanent or expiring rule-created memberships while coordinating overlapping rules.
+- Supports opt-in automatic Rule execution by the Windows service, including encrypted machine-scoped credentials, IPv4/CIDR allowlists, change limits, IP/severity deduplication, and audit history.
+- Maintains expiring rule-created memberships while Manager is closed, preserves pre-existing manual memberships, and pauses automation after three consecutive failures.
+- Stores shared Rules and automation state in `%ProgramData%\SophosSecurityManager\Automation`; previous per-user Rules migrate automatically when Manager starts.
+- Requires running Manager as Administrator to view or change shared Rules and automation settings; Setup limits the Automation directory to Administrators and SYSTEM.
+- Shows automation status and connection testing under **Manage > Service**; pausing automation does not stop Syslog collection.
 
 ### Logging
 
