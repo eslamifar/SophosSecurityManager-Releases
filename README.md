@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.43**
+Current version: **1.3.44**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.43 includes a Windows service named:
+Version 1.3.44 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -149,9 +149,9 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Supports opt-in automatic Rule execution by the Windows service, including encrypted machine-scoped credentials, IPv4/CIDR allowlists, change limits, IP/severity deduplication, and audit history.
 - Maintains expiring rule-created memberships while Manager is closed, preserves pre-existing manual memberships, and pauses automation after three consecutive failures.
 - Stores shared Rules in `%ProgramData%\SophosSecurityManager\Rules`, where a normal Manager session can create, edit, preview, apply, and enable automatic Rules. The Threat Collector reads the same Rules even after Manager closes.
-- Keeps service credentials and automation configuration protected in `%ProgramData%\SophosSecurityManager\Automation`. Configuring credentials initially requires Administrator access; the automatic Rule checkbox and subsequent service execution do not. Setup migrates previous shared Rules.
+- Keeps service credentials and automation configuration protected in `%ProgramData%\SophosSecurityManager\Automation`. Already-configured, unpaused automatic Rules can run in the service while Manager is closed. Checking the automatic Rule option does not itself configure credentials; on a fresh installation without service credentials, automation will not run. Setup migrates previous shared Rules.
 - If the shared Rules directory is inaccessible, Manager falls back to personal manual-only Rules instead of failing the Sophos connection. Local users who can edit shared Rules can cause service-driven Sophos changes, so use this feature on trusted workstations.
-- Shows automation status and connection testing under **Manage > Service**; pausing automation does not stop Syslog collection.
+- Shows collector status under **Manage > Service**, with Start, Restart, Stop, and Windows Services controls on the next row. Automation credential setup, test, pause/resume, and status controls are temporarily hidden.
 
 ### Logging
 
@@ -165,7 +165,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Runs independently using `SophosSecurityManager.UI.exe --widget`; Setup does not install a duplicate standalone Widget runtime.
 - Uses a shorter four-card layout for connection heartbeat, gateway health, latest backup, and attack events on the connected firewall's calendar date, including events whose reported UTC offset differs from Windows.
 - Integrates collector health into the Threats card; when the Windows service is stopped, the card shows **Service is not running** in red instead of a potentially misleading threat count.
-- Highlights disconnected gateways, notifies when a gateway newly needs attention, and makes every status card open Manager directly at Home, Network > Gateways, Manage > Backup / Restore, or Threats as appropriate.
+- Highlights disconnected gateways, notifies when a gateway newly needs attention, and makes every status card open Manager directly at Home, Network > Gateways, Manage > Backup / Restore, or Threats as appropriate. Opening Threats from the Widget selects Last days = 1 and runs Refresh.
 - Uses green for backups up to 10 days old, amber for more than 10 through 30 days, and red for older or unavailable backup state.
 - Opens Manager or restores its notification-area-hidden window without launching a duplicate process; starting Manager again also restores its existing window.
 - Uses an embedded multi-resolution Widget window, tray, and shortcut icon, and supports an explicit close control, Always on top, new-threat notifications, single-instance protection, and optional Windows startup.
