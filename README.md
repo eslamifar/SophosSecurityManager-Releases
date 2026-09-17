@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.42**
+Current version: **1.3.43**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.42 includes a Windows service named:
+Version 1.3.43 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -55,9 +55,10 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 
 ### Threat IP table
 
-- Separate **All**, **Critical**, **Major**, **Moderate**, and dynamically discovered historical severity tabs show their current IP counts; standard tabs remain visible when empty.
-- Uses a configurable calendar-day lookback period from 1 to 365 days and preserves the calendar date carried by Sophos even when its UTC offset differs from Windows.
+- Separate **All**, **Critical**, **Major**, **Moderate**, and dynamically discovered historical severity tabs show attack-event counts, matching the Widget and Sophos Reports; standard tabs remain visible when empty.
+- Uses a configurable calendar-day lookback period from 1 to 365 days. Manager reads the connected firewall's time zone from its XML API on every connection and uses its date for Threats and Widget day filters, while preserving the calendar date carried by each Sophos event even if its reported UTC offset differs from Windows.
 - Groups repeated events by public source IP.
+- Shows both attack-event and unique source-IP totals in the Threats footer; eight events from seven IPs give **All (8)** and seven table rows.
 - Shows severity, source IP, attack count, latest threat/signature, last-seen time, country, action, and interface.
 - Shows Sophos group membership for exact IP hosts and containing CIDR network objects.
 - Highlights Critical, Major, and Moderate rows with different colors.
@@ -162,7 +163,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 ### Desktop Widget
 
 - Runs independently using `SophosSecurityManager.UI.exe --widget`; Setup does not install a duplicate standalone Widget runtime.
-- Uses a shorter four-card layout for connection heartbeat, gateway health, latest backup, and threats from the current Sophos calendar date, including events whose reported UTC offset differs from Windows.
+- Uses a shorter four-card layout for connection heartbeat, gateway health, latest backup, and attack events on the connected firewall's calendar date, including events whose reported UTC offset differs from Windows.
 - Integrates collector health into the Threats card; when the Windows service is stopped, the card shows **Service is not running** in red instead of a potentially misleading threat count.
 - Highlights disconnected gateways, notifies when a gateway newly needs attention, and makes every status card open Manager directly at Home, Network > Gateways, Manage > Backup / Restore, or Threats as appropriate.
 - Uses green for backups up to 10 days old, amber for more than 10 through 30 days, and red for older or unavailable backup state.
