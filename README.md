@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.46**
+Current version: **1.3.47**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.46 includes a Windows service named:
+Version 1.3.47 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -63,6 +63,7 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 - Shows Sophos group membership for exact IP hosts and containing CIDR network objects.
 - Highlights Critical, Major, and Moderate rows with different colors.
 - Lets the user select one or more public source IPs and add them to an existing Sophos IP group.
+- Shows per-IP addition progress, supports cancelling remaining operations, and displays the final result.
 - Rejects private or invalid addresses from the add-to-group action.
 
 ### Collector service controls (Manage > Service)
@@ -124,6 +125,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Supports guarded Safe/Fast batch import, stop-after-batch, and last-batch rollback.
 - Creates, searches, sorts, updates, and removes supported IP hosts, CIDR network objects, and groups.
 - Provides `# ALL` and `# DUPLICATES` inventory views.
+- Allows selecting multiple IPs in Groups, then choosing whether to remove them only from that group or also delete their host objects. Sophos may reject deletion when other groups or policies still reference a host.
 - Includes MAC-host creation and editing with validated single or multi-address input and duplicate detection.
 - Includes FQDN hosts and groups, URL-to-hostname normalization, membership filtering, and safe removal from groups.
 
@@ -153,9 +155,9 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Stores shared Rules in `%ProgramData%\SophosSecurityManager\Rules`, where a normal Manager session can create, edit, preview, apply, and enable automatic Rules. The Threat Collector reads the same Rules even after Manager closes.
 - Keeps service credentials and automation configuration protected in `%ProgramData%\SophosSecurityManager\Automation`. Already-configured, unpaused automatic Rules can run in the service while Manager is closed. Checking the automatic Rule option does not itself configure credentials; on a fresh installation without service credentials, automation will not run. Setup migrates previous shared Rules.
 - If the shared Rules directory is inaccessible, Manager falls back to personal manual-only Rules instead of failing the Sophos connection. Local users who can edit shared Rules can cause service-driven Sophos changes, so use this feature on trusted workstations.
-- Manage > Service shows the Windows collector and a searchable per-IP automatic-Rule activity history with additions, scheduled expiry, removals, and failures. This activity excludes manual Apply and stays empty until service credentials are configured and an automatic action occurs. The Last report is historical, not necessarily a live error. Start, Restart, Stop, and Windows Services appear below service status. Credential setup, test, and pause/resume controls remain hidden.
+- Manage > Service shows the Windows collector and a searchable per-IP automatic-Rule activity history with additions, scheduled expiry, removals, and failures. This activity excludes manual Apply and stays empty until service credentials are configured and an automatic rule checks a matching threat. The Last report is historical, not necessarily a live error. Start, Restart, Stop, and Windows Services appear below service status. Use **Set up automatic Rules** to approve administrator elevation, test XML API access, and securely save the service credentials; the setup form also offers an optional catch-up evaluation for stored matching threats.
 - The Rules grid refreshes while open, so Last run updates made by the service become visible without reopening the subtab. For a 180-day Rule, expiry is measured from the time the IP is added; the service removes its Rule-created group membership after expiry when able to connect. It keeps the Sophos Host object and any membership still required by another Rule.
-- Manage > Email stores SMTP host, port, None/STARTTLS/SSL-TLS encryption, authentication, sender name/address, reply-to, default recipients, and timeout. The password is encrypted for the current Windows user. These settings are saved for a future feature; version 1.3.46 does not send email and has no email-action Rules.
+- Manage > Email stores SMTP host, port, None/STARTTLS/SSL-TLS encryption, authentication, sender name/address, reply-to, default recipients, and timeout. The password is encrypted for the current Windows user. These settings are saved for a future feature; version 1.3.47 does not send email and has no email-action Rules.
 
 ### Logging
 
