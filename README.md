@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.47**
+Current version: **1.3.48**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.47 includes a Windows service named:
+Version 1.3.48 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -64,6 +64,7 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 - Highlights Critical, Major, and Moderate rows with different colors.
 - Lets the user select one or more public source IPs and add them to an existing Sophos IP group.
 - Shows per-IP addition progress, supports cancelling remaining operations, and displays the final result.
+- Reloads Sophos membership and refreshes every Threats severity tab after each successful addition, including service-side Rule changes detected while Threats or Manage > Service is open.
 - Rejects private or invalid addresses from the add-to-group action.
 
 ### Collector service controls (Manage > Service)
@@ -156,8 +157,10 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Keeps service credentials and automation configuration protected in `%ProgramData%\SophosSecurityManager\Automation`. Already-configured, unpaused automatic Rules can run in the service while Manager is closed. Checking the automatic Rule option does not itself configure credentials; on a fresh installation without service credentials, automation will not run. Setup migrates previous shared Rules.
 - If the shared Rules directory is inaccessible, Manager falls back to personal manual-only Rules instead of failing the Sophos connection. Local users who can edit shared Rules can cause service-driven Sophos changes, so use this feature on trusted workstations.
 - Manage > Service shows the Windows collector and a searchable per-IP automatic-Rule activity history with additions, scheduled expiry, removals, and failures. This activity excludes manual Apply and stays empty until service credentials are configured and an automatic rule checks a matching threat. The Last report is historical, not necessarily a live error. Start, Restart, Stop, and Windows Services appear below service status. Use **Set up automatic Rules** to approve administrator elevation, test XML API access, and securely save the service credentials; the setup form also offers an optional catch-up evaluation for stored matching threats.
+- Automatic Rule setup also provides a per-minute change limit and IPv4/CIDR allowlist. Service activity can be filtered to 24 hours, 7 days (default), 30 days, or all time and displays at most the newest 100 matches.
+- When an IP is already in the target group, automatic evaluation preserves its existing membership duration. An expiry is created only when that Rule actually adds the IP.
 - The Rules grid refreshes while open, so Last run updates made by the service become visible without reopening the subtab. For a 180-day Rule, expiry is measured from the time the IP is added; the service removes its Rule-created group membership after expiry when able to connect. It keeps the Sophos Host object and any membership still required by another Rule.
-- Manage > Email stores SMTP host, port, None/STARTTLS/SSL-TLS encryption, authentication, sender name/address, reply-to, default recipients, and timeout. The password is encrypted for the current Windows user. These settings are saved for a future feature; version 1.3.47 does not send email and has no email-action Rules.
+- Manage > Email stores SMTP host, port, None/STARTTLS/SSL-TLS encryption, authentication, sender name/address, reply-to, default recipients, and timeout. The password is encrypted for the current Windows user. These settings are saved for a future feature; version 1.3.48 does not send email and has no email-action Rules.
 
 ### Logging
 
@@ -195,6 +198,8 @@ The Setup executable uses the same high-contrast icon as Sophos Security Manager
 Release builds protect all first-party Manager, Widget, API, Core, Infrastructure, Models, and Services assemblies consistently. Before Setup is produced, the release builder launches both packaged Manager and Widget modes with strict startup error handling; either mode failing its smoke test stops the release build.
 
 The application checks this repository's GitHub Releases API for new releases. The latest release tag and installer asset are authoritative; no separate `version.json` manifest is used. Downloads include progress, Pause/Resume, Cancel, SHA-256 verification, and a direct browser link if the in-app download fails.
+
+Manager checks for updates at startup and every hour while it remains open. The window title shows the installed version and keeps an update-available notice visible when a newer release is found; hourly checks do not repeatedly open the download prompt.
 
 When closing normally, the desktop application clears its XML API state first. The XML API is request-based and does not keep a persistent authenticated session; the independent Threat Collector remains running.
 
