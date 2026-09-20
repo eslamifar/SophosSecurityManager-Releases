@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.48**
+Current version: **1.3.49**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.48 includes a Windows service named:
+Version 1.3.49 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -32,7 +32,7 @@ Setup performs these operations automatically with administrator permission:
 
 The service runs independently of the desktop application. Closing Sophos Security Manager does **not** stop threat collection.
 
-After installation, open **Manage > Service** to see the service state and uptime or use its **Start service**, **Restart service**, **Stop service**, and **Windows Services** controls. Collector diagnostics remain in Threats.
+After installation, open **Manage > Config** to see the service state and uptime or use its **Start service**, **Restart service**, **Stop service**, and **Windows Services** controls. Collector diagnostics remain in Threats.
 
 ## Configure Sophos for Threats
 
@@ -64,10 +64,10 @@ The application checks the target IP, port, IPS/ATP selections, and severity whe
 - Highlights Critical, Major, and Moderate rows with different colors.
 - Lets the user select one or more public source IPs and add them to an existing Sophos IP group.
 - Shows per-IP addition progress, supports cancelling remaining operations, and displays the final result.
-- Reloads Sophos membership and refreshes every Threats severity tab after each successful addition, including service-side Rule changes detected while Threats or Manage > Service is open.
+- Reloads Sophos membership and refreshes every Threats severity tab after each successful addition, including service-side Rule changes detected while Threats or Manage > Config is open.
 - Rejects private or invalid addresses from the add-to-group action.
 
-### Collector service controls (Manage > Service)
+### Collector service controls (Manage > Config)
 
 - Displays the exact Windows service name.
 - Shows Running/Stopped state, UDP 514 status, and running duration.
@@ -122,11 +122,12 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 ### Hosts
 
 - Imports IPv4 intelligence from TXT files or online sources.
+- Selects an existing firewall group from a 40/60 target-group row at the top of Hosts > IPs; the selector is locked during automatic import, while Home retains the Group capacity safety limit and no longer contains Base group name.
 - Previews valid/invalid/duplicate entries and runs a Dry Run before changes.
 - Supports guarded Safe/Fast batch import, stop-after-batch, and last-batch rollback.
 - Creates, searches, sorts, updates, and removes supported IP hosts, CIDR network objects, and groups.
 - Provides `# ALL` and `# DUPLICATES` inventory views.
-- Allows selecting multiple IPs in Groups, then choosing whether to remove them only from that group or also delete their host objects. Sophos may reject deletion when other groups or policies still reference a host.
+- Allows selecting multiple IPs in Groups, removing all selected memberships with one atomic group update, then optionally deleting Host objects one by one with Cancel support between requests. Sophos may reject deletion when other groups or policies still reference a host.
 - Includes MAC-host creation and editing with validated single or multi-address input and duplicate detection.
 - Includes FQDN hosts and groups, URL-to-hostname normalization, membership filtering, and safe removal from groups.
 
@@ -140,8 +141,9 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 ### Manage
 
-- Organizes management features into **Backup / Restore**, **Device Power**, **Service**, and **Email** subtabs. **Rules** is now the last subtab under Threats.
+- Organizes management features into **Backup / Restore**, **Device Power**, **Config**, and **Email** subtabs. **Rules** and **Logs** are the final Threats subtabs.
 - Loads and applies Local, Email, and FTP backup settings and schedules.
+- Copies a newly created FTP backup into a configurable local archive when the FTP password is available in the current session.
 - Preserves stored Sophos passwords unless replacements are entered.
 - Requests immediate configuration backups.
 - Opens the configured FTP destination in Windows Explorer without placing credentials in the URL.
@@ -156,11 +158,13 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Stores shared Rules in `%ProgramData%\SophosSecurityManager\Rules`, where a normal Manager session can create, edit, preview, apply, and enable automatic Rules. The Threat Collector reads the same Rules even after Manager closes.
 - Keeps service credentials and automation configuration protected in `%ProgramData%\SophosSecurityManager\Automation`. Already-configured, unpaused automatic Rules can run in the service while Manager is closed. Checking the automatic Rule option does not itself configure credentials; on a fresh installation without service credentials, automation will not run. Setup migrates previous shared Rules.
 - If the shared Rules directory is inaccessible, Manager falls back to personal manual-only Rules instead of failing the Sophos connection. Local users who can edit shared Rules can cause service-driven Sophos changes, so use this feature on trusted workstations.
-- Manage > Service shows the Windows collector and a searchable per-IP automatic-Rule activity history with additions, scheduled expiry, removals, and failures. This activity excludes manual Apply and stays empty until service credentials are configured and an automatic rule checks a matching threat. The Last report is historical, not necessarily a live error. Start, Restart, Stop, and Windows Services appear below service status. Use **Set up automatic Rules** to approve administrator elevation, test XML API access, and securely save the service credentials; the setup form also offers an optional catch-up evaluation for stored matching threats.
-- Automatic Rule setup also provides a per-minute change limit and IPv4/CIDR allowlist. Service activity can be filtered to 24 hours, 7 days (default), 30 days, or all time and displays at most the newest 100 matches.
+- Threats > Logs shows searchable per-IP Windows-service Rule activity with additions, scheduled expiry, removals, and failures. This excludes manual Apply and stays empty until service credentials are configured and an automatic rule checks a matching threat. Activity can be filtered to 24 hours, 7 days (default), 30 days, or all time and displays at most the newest 100 matches.
+- Manage > Config contains service controls, automatic Rule setup, and configurable folders for three severity-based automatic-block CSV files and local FTP backup copies. Use **Set up automatic Rules** to approve administrator elevation, test XML API access, and securely save service credentials.
+- Automatic Rule setup also provides a per-minute change limit, IPv4/CIDR allowlist, and optional catch-up evaluation for stored matching threats.
+- Successful automatic additions append block time, source IP, severity, Rule, and target group to Critical.csv, Major.csv, or Moderate.csv.
 - When an IP is already in the target group, automatic evaluation preserves its existing membership duration. An expiry is created only when that Rule actually adds the IP.
 - The Rules grid refreshes while open, so Last run updates made by the service become visible without reopening the subtab. For a 180-day Rule, expiry is measured from the time the IP is added; the service removes its Rule-created group membership after expiry when able to connect. It keeps the Sophos Host object and any membership still required by another Rule.
-- Manage > Email stores SMTP host, port, None/STARTTLS/SSL-TLS encryption, authentication, sender name/address, reply-to, default recipients, and timeout. The password is encrypted for the current Windows user. These settings are saved for a future feature; version 1.3.48 does not send email and has no email-action Rules.
+- Manage > Email stores SMTP host, port, None/STARTTLS/SSL-TLS encryption, authentication, sender name/address, reply-to, default recipients, and timeout. The password is encrypted for the current Windows user. These settings are saved for a future feature; version 1.3.49 does not send email and has no email-action Rules.
 
 ### Logging
 
