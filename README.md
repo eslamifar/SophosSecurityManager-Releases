@@ -5,7 +5,7 @@
 
 Sophos Security Manager is a Windows x64 application for managing supported Sophos Firewall features through the XML API and continuously collecting IPS/ATP threat events through Syslog.
 
-Current version: **1.3.49**
+Current version: **1.3.50**
 
 ## Download
 
@@ -15,7 +15,7 @@ The installer is self-contained; a separate .NET runtime is normally not require
 
 ## Important: Threat Collector service installation
 
-Version 1.3.49 includes a Windows service named:
+Version 1.3.50 includes a Windows service named:
 
 ```text
 SophosSecurityManagerThreatCollector
@@ -109,7 +109,7 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 
 ### Home
 
-- Configures the Sophos host/IP, HTTPS port, credentials, base group, capacity, SSL verification, and inactivity disconnect.
+- Configures the Sophos host/IP, HTTPS port, credentials, group capacity, SSL verification, and inactivity disconnect. Import target groups are selected in Hosts > IPs.
 - Provides a compact icon dashboard for About, Help, Widget, Web Admin, Save Settings, and Connect/Disconnect, with a dedicated status row for connection, loading, and update progress.
 - Opens the currently entered Sophos Web Admin address without requiring settings to be saved first.
 - Uses 15 minutes as the default inactivity disconnect period, with Never disconnect, 5, 10, 15, and 30 minute choices.
@@ -161,10 +161,10 @@ Rejected-message samples are rate-limited to avoid excessive disk usage. Collect
 - Threats > Logs shows searchable per-IP Windows-service Rule activity with additions, scheduled expiry, removals, and failures. This excludes manual Apply and stays empty until service credentials are configured and an automatic rule checks a matching threat. Activity can be filtered to 24 hours, 7 days (default), 30 days, or all time and displays at most the newest 100 matches.
 - Manage > Config contains service controls, automatic Rule setup, and configurable folders for three severity-based automatic-block CSV files and local FTP backup copies. Use **Set up automatic Rules** to approve administrator elevation, test XML API access, and securely save service credentials.
 - Automatic Rule setup also provides a per-minute change limit, IPv4/CIDR allowlist, and optional catch-up evaluation for stored matching threats.
-- Successful automatic additions append block time, source IP, severity, Rule, and target group to Critical.csv, Major.csv, or Moderate.csv.
+- Successful automatic additions append block time, source IP, severity, Rule, target group, and the exact block-until time (or Permanent) to Critical.csv, Major.csv, or Moderate.csv.
 - When an IP is already in the target group, automatic evaluation preserves its existing membership duration. An expiry is created only when that Rule actually adds the IP.
 - The Rules grid refreshes while open, so Last run updates made by the service become visible without reopening the subtab. For a 180-day Rule, expiry is measured from the time the IP is added; the service removes its Rule-created group membership after expiry when able to connect. It keeps the Sophos Host object and any membership still required by another Rule.
-- Manage > Email stores SMTP host, port, None/STARTTLS/SSL-TLS encryption, authentication, sender name/address, reply-to, default recipients, and timeout. The password is encrypted for the current Windows user. These settings are saved for a future feature; version 1.3.49 does not send email and has no email-action Rules.
+- Manage > Email stores SMTP host, port, None/STARTTLS/SSL-TLS encryption, authentication, sender name/address, reply-to, default recipients, and timeout. The password is encrypted for the current Windows user. These settings are saved for a future feature; version 1.3.50 does not send email and has no email-action Rules.
 
 ### Logging
 
