@@ -7,7 +7,7 @@ Sophos Security Manager is a Windows x64 desktop application for managing suppor
 
 Manager requires Windows Administrator approval at startup. If elevation is unavailable or the UAC request is cancelled, Manager closes without opening. The independent Widget does not require elevation merely to display status.
 
-Current release: **1.3.65**
+Current release: **1.3.66**
 
 Supported firewall baseline: **Sophos Firewall 17.5 or later**
 
@@ -15,7 +15,7 @@ Supported firewall baseline: **Sophos Firewall 17.5 or later**
 
 **[Download the latest self-contained Windows x64 installer](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest)**
 
-> **Version 1.3.65 includes a Windows service for threat logs and optional rule automation.** Setup creates and starts `SophosSecurityManagerThreatCollector`, configures it for automatic startup on UDP 514, and adds the required Windows Firewall rule. The service keeps collecting IPS/ATP Syslog events after the desktop application is closed. See [Threat Collector setup](#threat-collector-setup) before using the Threats tab.
+> **Version 1.3.66 includes a Windows service for threat logs and optional rule automation.** Setup creates and starts `SophosSecurityManagerThreatCollector`, configures it for automatic startup on UDP 514, and adds the required Windows Firewall rule. The service keeps collecting IPS/ATP Syslog events after the desktop application is closed. See [Threat Collector setup](#threat-collector-setup) before using the Threats tab.
 
 ## Main workspaces
 
@@ -82,16 +82,16 @@ Supported firewall baseline: **Sophos Firewall 17.5 or later**
 - Filter by **Critical**, **Major**, and optional **Moderate** severity and a configurable calendar-day period. Manager reads the firewall's configured time zone from its XML API at each connection, uses that zone to determine today's date, and preserves the calendar date carried by each Sophos event even when its reported UTC offset differs from Windows.
 - Group repeated events by source IP and show attack count, latest threat, last-seen time, country, action, and interface.
 - Use fixed severity colors in **All** (Critical red, Major yellow, Moderate blue); inside an individual severity tab use attack-count colors (3 or more red, 2 yellow, 1 blue), independent of sorting.
-- Place the All and dynamic severity tabs above their Last days and Target group controls. Rules and Logs use the same top navigation without showing threat-only controls.
+- Place the All and dynamic severity tabs above their exact From/To date-time and Target group controls. Rules and Logs use the same top navigation; Logs has its own date-time range.
 - Sort each threat inventory by Last seen descending initially; select any column header to switch sorting to that field and toggle ascending/descending order.
 - Show attack-event counts in the Widget and every Threats tab, matching Sophos Reports. The Threats table still groups repeated events by IP and shows both event and unique-IP totals in its footer.
 - Show whether each exact IP or containing CIDR network object already belongs to Sophos groups.
 - Select one or more public IPs and add them to an existing Sophos IP group.
 - Follow per-IP group-addition progress and cancel remaining operations after the current request finishes.
 - Use the first Target group entry as an explicit selection prompt; adding selected IPs is blocked until a real Sophos group is selected.
-- Review current timed Rule memberships, upcoming expirations, overdue entries, and recent expiration outcomes in **Memberships / Expiring**.
+- Review current timed Rule memberships, upcoming expirations, overdue entries, and recent expiration outcomes in **Expirations**.
 - Double-click an IP in a threat or membership table to view its complete stored attack history and Rule-automation activity.
-- Chart daily Critical, Major, Moderate, and other threat-event trends over a selectable 1-365 day period in **Trends**; click a day to display its exact severity totals.
+- Chart daily Critical, Major, Moderate, and other threat-event trends over a selectable 1-365 day period in **Trends**; click a day to display its exact severity totals and every attacking IP, then double-click an IP for its full history.
 - View the Windows collector service state and controls in Manage > Config.
 - Verify that Sophos Log settings target this computer, use UDP 514, enable IPS/ATP forwarding, and use a severity threshold suitable for Moderate events.
 - Distinguish explicit Sophos detection severity from Syslog transport priority. Legacy IPS records use `rule_priority` when detection severity is absent; transport priority remains the final fallback.
@@ -140,7 +140,7 @@ Important behavior:
 - Keep the visibly selected Rule synchronized with Edit, Duplicate, Enable/Disable, Delete, and Preview / Apply actions after the grid refreshes.
 - Match public source IPv4 addresses by attack count, selected Critical/Major/Moderate severities, and a rolling minute/hour/day window.
 - Preview matching IPs and their current Sophos memberships before manually applying a rule to its target IP group.
-- A Rule uses its own rolling time window, independent of Threats > Last days. If every match already belongs to the target group, Preview reports that no changes are needed and does not offer Apply.
+- A Rule uses its own rolling time window, independent of the Threats From/To filter. If every match already belongs to the target group, Preview reports that no changes are needed and does not offer Apply.
 - When no IP matches, explain the severity totals inside the selected rolling window and whether the configured attack threshold was reached.
 - Keep existing group memberships intact, reuse existing host objects, and support permanent or expiring rule-created memberships.
 - Process expired memberships after a successful connection or before applying another rule, without removing memberships still required by another rule.
@@ -179,7 +179,7 @@ Important behavior:
 - Run as an independent process from the main `SophosSecurityManager.UI.exe --widget` executable; closing Manager does not close the Widget.
 - Show Manager connection heartbeat, gateway health, latest successful in-app backup and its type, and the number of threats received during the current local calendar day in a shorter four-card layout.
 - Integrate Threat Collector health into the Threats card; when the service is stopped, show **Service is not running** in red instead of a threat count.
-- Highlight disconnected gateways, notify when a gateway newly needs attention, and make every status card open Manager directly at Home, Network > Gateways, Manage > Backup / Restore, or Threats as appropriate. Opening Threats from the Widget selects Last days = 1 and runs Refresh.
+- Highlight disconnected gateways, notify when a gateway newly needs attention, and make every status card open Manager directly at Home, Network > Gateways, Manage > Backup / Restore, or Threats as appropriate. Opening Threats from the Widget selects today from 00:00:00 through 23:59:59 and runs Refresh.
 - Color the latest backup green up to 10 days old, amber from more than 10 through 30 days, and red when older or unavailable.
 - Refresh status every 10 seconds and show a Windows notification when a new threat arrives after the Widget starts.
 - Open or close the Widget from Manager, and open or restore Manager from the Widget or its tray menu; controls follow the current process and window state.
