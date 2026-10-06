@@ -201,6 +201,7 @@ Important behavior:
 - The main title shows the installed version and keeps an update-available notice visible while a newer release exists.
 - Versions are compared numerically, so `1.3.52` is newer than `1.3.51`.
 - Downloads support progress, Pause/Resume, and Cancel.
+- The update cache keeps only the installed version and the version being downloaded or installed. When no update is pending, it keeps the installed version and only the newest previous version. Active <code>.download</code> files are preserved, while older version folders are removed on a successful update check.
 - The installer SHA-256 digest supplied by GitHub is verified before Setup starts.
 - If in-app download or verification fails, the direct HTTPS release link is shown for browser download.
 - When closing normally with Alt+F4 or the Close button, the application clears its connection state first. The Threat Collector service continues running.
