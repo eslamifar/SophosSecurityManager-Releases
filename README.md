@@ -7,7 +7,7 @@ Sophos Security Manager is a Windows x64 desktop application for managing suppor
 
 Manager requires Windows Administrator approval at startup. If elevation is unavailable or the UAC request is cancelled, Manager closes without opening. The independent Widget does not require elevation merely to display status.
 
-Current release: **1.3.63**
+Current release: **1.3.64**
 
 Supported firewall baseline: **Sophos Firewall 17.5 or later**
 
@@ -15,7 +15,7 @@ Supported firewall baseline: **Sophos Firewall 17.5 or later**
 
 **[Download the latest self-contained Windows x64 installer](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest)**
 
-> **Version 1.3.63 includes a Windows service for threat logs and optional rule automation.** Setup creates and starts `SophosSecurityManagerThreatCollector`, configures it for automatic startup on UDP 514, and adds the required Windows Firewall rule. The service keeps collecting IPS/ATP Syslog events after the desktop application is closed. See [Threat Collector setup](#threat-collector-setup) before using the Threats tab.
+> **Version 1.3.64 includes a Windows service for threat logs and optional rule automation.** Setup creates and starts `SophosSecurityManagerThreatCollector`, configures it for automatic startup on UDP 514, and adds the required Windows Firewall rule. The service keeps collecting IPS/ATP Syslog events after the desktop application is closed. See [Threat Collector setup](#threat-collector-setup) before using the Threats tab.
 
 ## Main workspaces
 
@@ -88,6 +88,10 @@ Supported firewall baseline: **Sophos Firewall 17.5 or later**
 - Show whether each exact IP or containing CIDR network object already belongs to Sophos groups.
 - Select one or more public IPs and add them to an existing Sophos IP group.
 - Follow per-IP group-addition progress and cancel remaining operations after the current request finishes.
+- Use the first Target group entry as an explicit selection prompt; adding selected IPs is blocked until a real Sophos group is selected.
+- Review current timed Rule memberships, upcoming expirations, overdue entries, and recent expiration outcomes in **Memberships / Expiring**.
+- Double-click an IP in a threat or membership table to view its complete stored attack history and Rule-automation activity.
+- Chart daily Critical, Major, Moderate, and other threat-event trends over a selectable 1-365 day period in **Trends**.
 - View the Windows collector service state and controls in Manage > Config.
 - Verify that Sophos Log settings target this computer, use UDP 514, enable IPS/ATP forwarding, and use a severity threshold suitable for Moderate events.
 - Distinguish explicit Sophos detection severity from Syslog transport priority. Legacy IPS records use `rule_priority` when detection severity is absent; transport priority remains the final fallback.
