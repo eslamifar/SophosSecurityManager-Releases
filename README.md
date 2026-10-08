@@ -7,7 +7,7 @@ Sophos Security Manager is a Windows x64 desktop application for managing suppor
 
 Manager requires Windows Administrator approval at startup. If elevation is unavailable or the UAC request is cancelled, Manager closes without opening. The independent Widget does not require elevation merely to display status.
 
-Current release: **1.3.66**
+Current release: **1.3.67**
 
 Supported firewall baseline: **Sophos Firewall 17.5 or later**
 
@@ -15,7 +15,7 @@ Supported firewall baseline: **Sophos Firewall 17.5 or later**
 
 **[Download the latest self-contained Windows x64 installer](https://github.com/eslamifar/SophosSecurityManager-Releases/releases/latest)**
 
-> **Version 1.3.66 includes a Windows service for threat logs and optional rule automation.** Setup creates and starts `SophosSecurityManagerThreatCollector`, configures it for automatic startup on UDP 514, and adds the required Windows Firewall rule. The service keeps collecting IPS/ATP Syslog events after the desktop application is closed. See [Threat Collector setup](#threat-collector-setup) before using the Threats tab.
+> **Version 1.3.67 includes a Windows service for threat logs and optional rule automation.** Setup creates and starts `SophosSecurityManagerThreatCollector`, configures it for automatic startup on UDP 514, and adds the required Windows Firewall rule. The service keeps collecting IPS/ATP Syslog events after the desktop application is closed. See [Threat Collector setup](#threat-collector-setup) before using the Threats tab.
 
 ## Main workspaces
 
@@ -91,7 +91,7 @@ Supported firewall baseline: **Sophos Firewall 17.5 or later**
 - Use the first Target group entry as an explicit selection prompt; adding selected IPs is blocked until a real Sophos group is selected.
 - Review current timed Rule memberships, upcoming expirations, overdue entries, and recent expiration outcomes in **Expirations**.
 - Double-click an IP in a threat or membership table to view its complete stored attack history and Rule-automation activity.
-- Chart daily Critical, Major, Moderate, and other threat-event trends over a selectable 1-365 day period in **Trends**; click a day to display its exact severity totals and every attacking IP, then double-click an IP for its full history.
+- Chart daily Critical, Major, Moderate, and other threat-event trends over an exact From/To date-time range in **Trends**; click a day to display its exact severity totals and every attacking IP, then double-click an IP for its full history.
 - View the Windows collector service state and controls in Manage > Config.
 - Verify that Sophos Log settings target this computer, use UDP 514, enable IPS/ATP forwarding, and use a severity threshold suitable for Moderate events.
 - Distinguish explicit Sophos detection severity from Syslog transport priority. Legacy IPS records use `rule_priority` when detection severity is absent; transport priority remains the final fallback.
@@ -145,6 +145,7 @@ Important behavior:
 - Keep existing group memberships intact, reuse existing host objects, and support permanent or expiring rule-created memberships.
 - Process expired memberships after a successful connection or before applying another rule, without removing memberships still required by another rule.
 - Optionally run enabled rules automatically in the Windows service whenever a matching-severity threat arrives.
+- Keep one effective automatic severity per IP: higher-severity matches promote the IP and remove lower-severity group memberships, lower-severity matches cannot downgrade it, and stronger same-group Rules may extend but never shorten its expiration.
 - Use **Manage > Config > Set up automatic Rules** for a one-time administrator-approved connection test and protected service-credential setup. The form supports an IPv4/CIDR allowlist, per-minute change limit, and optional catch-up evaluation of stored threats within Rule windows.
 - Max changes / minute delays excess queued additions until the next minute; the IP/CIDR allowlist excludes trusted addresses and networks; stored-threat catch-up is a one-time evaluation of events still inside enabled Rule windows.
 - Create, edit, preview, manually apply, and enable automatic shared Rules from the elevated Manager. Both Manager and the Threat Collector use `%ProgramData%\SophosSecurityManager\Rules`.
